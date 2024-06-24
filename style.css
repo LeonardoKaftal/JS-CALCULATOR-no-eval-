@@ -9,47 +9,6 @@ html {
             box-sizing: border-box;
 }
 
-p 
-{
-    font-family: 'Roboto', sans-serif;    
-    font-size: 20px;
-    line-height: 1.6;
-}
-h1
-{
-    font-family: 'Poppins', sans-serif;
-    font-size: 45px;
-    line-height: 1.6;
-}
-h2
-{
-    font-family: 'Poppins', sans-serif;
-    font-size: 35px;
-    line-height: 1.6;
-}
-h3
-{
-    font-family: 'Poppins', sans-serif;
-    font-size: 30px;
-    line-height: 1.6;
-}
-h4
-{
-    font-family: 'Poppins', sans-serif;
-    font-size: 25px;
-    line-height: 1.6;
-}
-h5
-{
-    font-family: 'Poppins', sans-serif;
-    font-size: 15px;
-    line-height: 1.6;
-}
-h6
-{
-    font-family: 'Poppins', sans-serif;
-    line-height: 1.6;
-}
 body {
     display: grid;
     align-content: center;
@@ -78,13 +37,13 @@ body {
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(5,1fr);
 }
-.button-element-container {
+.button-element-container, .button-element-container2 {
     display: flex;
     border: solid 1px rgb(175, 168, 168);
     align-items: center;
     justify-content: center;
 }
-.button-element-container:hover {
+.button-element-container:hover, .button-element-container2:hover {
     background-color: rgb(172, 169, 169);
 }
 #erase-icon {
@@ -92,6 +51,6 @@ body {
     height: 35px;
 }
 
-.colored-text { 
+.display-container { 
     color: rgb(255, 255, 255);
 }
