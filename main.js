@@ -33,13 +33,49 @@ function initialEventListeners() {
 }
 
 function parse() {
-    console.log("Evaluating...")
-    const screenContent = screen.textContent.split("")
-    handleParenthesis(screenContent)
+    let screenContent = screen.textContent;
+    
+    // Check for unclosed parentheses
+    if (screenContent.split('(').length !== screenContent.split(')').length) {
+        alert("Error: unclosed parenthesis");
+        return;
+    }
+    
+    // Check for incomplete operations
+    if (/[\+\-\*\/]$/.test(screenContent)) {
+        alert("Error: incomplete operation");
+        return;
+    }
+
+    // Check for division by zero
+    if (/\/0/.test(screenContent)) {
+        alert("Error: division by zero");
+        return;
+    }
+
+
+    screenContent = screen.textContent.split("")
+    screenContent = handleParenthesis(screenContent)
+
+    // normal calculation
+    for (let i = 0; i < screenContent.length; i++) {
+        const element = screenContent[i]
+        if (element === "*" || element === "/") {
+            i = handleCalculation(screenContent, i)
+        }
+    }
+
+    screenContent = screen.textContent.split("")
+
+    for (let i = 0; i < screenContent.length; i++) {
+        const element = screenContent[i]
+        if (element === "+" || element === "-") {
+            i = handleCalculation(screenContent, i)
+        }
+    }
 }
 
 function handleParenthesis(screenContent) {
-    let result = 0
     lastParenthesisIndex = 0
 
     // hadle Multiplication and division
@@ -47,32 +83,32 @@ function handleParenthesis(screenContent) {
         if (screenContent[i] === "(") {
             tempLastParenthesisIndex = i
             lastParenthesisIndex = i
+
             // multiplication and division
             while (screenContent[tempLastParenthesisIndex] !== ")") {
                 tempLastParenthesisIndex++
-                if (screenContent[tempLastParenthesisIndex] === "*") {
-                    tempLastParenthesisIndex = handleCalculation(screenContent, tempLastParenthesisIndex)
-                }
-                else if (screenContent[tempLastParenthesisIndex] === "/") {
+                if (screenContent[tempLastParenthesisIndex] === "*" || screenContent[tempLastParenthesisIndex] === "/") {
                     tempLastParenthesisIndex = handleCalculation(screenContent, tempLastParenthesisIndex)
                 }
             }
+
             // addition and subtraction
             tempLastParenthesisIndex = i
             while (screenContent[tempLastParenthesisIndex] !== ")") {
                 tempLastParenthesisIndex++
-                if (screenContent[tempLastParenthesisIndex] === "+") {
+                if (screenContent[tempLastParenthesisIndex] === "+" || screenContent[tempLastParenthesisIndex] === "-") {
                     tempLastParenthesisIndex = handleCalculation(screenContent, tempLastParenthesisIndex)
                 }
-                else if (screenContent[tempLastParenthesisIndex] === "-") {
-                    tempLastParenthesisIndex = handleCalculation(screenContent, tempLastParenthesisIndex)
-                }
+                
             }
+            
             screenContent.splice(lastParenthesisIndex, 1)
             screenContent.splice(lastParenthesisIndex + 1, 1)
-            screen.textContent = screenContent.join("")
         }
+
     }
+    return screenContent            
+
 }
 
 
@@ -84,18 +120,16 @@ function handleCalculation(screenContent, operatorIndex) {
     let negativeIndex = operatorIndex - 1;
 
     // backwards
-    while (negativeIndex >= 0 && !isNaN(screenContent[negativeIndex])) {
-        console.log("aggiunti " + screenContent[negativeIndex])
+    while (negativeIndex >= 0 && !isNaN(screenContent[negativeIndex]) || screenContent[negativeIndex] === ".") {
         nums1.unshift(screenContent[negativeIndex]);
         screenContent.splice(negativeIndex, 1)
         negativeIndex--;
     }
 
     let positiveOperatorIndex = negativeIndex + 1
-    console.log(screenContent[positiveOperatorIndex])
 
     // upwards
-    while (positiveOperatorIndex < screenContent.length && !isNaN(screenContent[positiveOperatorIndex])) {
+    while (positiveOperatorIndex < screenContent.length && !isNaN(screenContent[positiveOperatorIndex]) || screenContent[positiveOperatorIndex] === ".") {
         nums2.push(screenContent[positiveOperatorIndex]);
         screenContent.splice(positiveOperatorIndex, 1)
     }
